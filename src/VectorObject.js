@@ -1,0 +1,103 @@
+import Vector2 from "./Vector2";
+import {List} from "immutable";
+
+export default class VectorObject {
+    /*
+     move trigger
+     - mouse event
+     - vector
+     - set position(force)
+     */
+    constructor(jqueryElement) {
+        this.element = jqueryElement;
+        this.forceMove = false;
+        this.vector = Vector2.empty();
+        this.position = Vector2.empty();
+        this.destination = Vector2.empty();
+        this.positionHistory = List();
+        this.positionHistoryLifeTimeMs = 100;
+        this.lastRendTime = (new Date()).getTime();
+        this.interferences = [];
+
+        this.initRenderLoop();
+    }
+
+    moveToPosition(vector, time) {
+
+    }
+
+    setDestination(vector) {
+
+    }
+
+    setPosition(vector) {
+        this.position = vector;
+        this.gcPositionHistory();
+        this.positionHistory = this.positionHistory.push([(new Date()).getTime(), vector]);
+    }
+
+    setVector(vector){
+        this.vector = vector;
+    }
+
+    getInertia(){
+        this.gcPositionHistory();
+        if(this.positionHistory.size==0)
+            return Vector2.empty();
+        let first = this.positionHistory.first()[1];
+        let rawVector = this.position.clone().subtract(first);
+        let normalize = rawVector.clone().mix(Vector2.empty(), 1-1/this.positionHistoryLifeTimeMs);
+        return normalize;
+    }
+
+    gcPositionHistory(){
+        let now = (new Date()).getTime();
+        this.positionHistory = this.positionHistory
+            .filter(i => i[0] + this.positionHistoryLifeTimeMs > now);
+    }
+
+    getComputedVector() {
+        return this.position;
+    }
+
+    /* virtual */
+    render(element, vector) {
+        // ex. rend to dom object
+    }
+
+    renderFire() {
+        // if chenged
+        let now = (new Date()).getTime();
+        let sub = now - this.lastRendTime;
+        let mixAmount = sub / 300;
+        mixAmount = Math.min(Math.max(mixAmount, 0), 1);
+        if(!this.vector.mix(Vector2.empty(), mixAmount).floor)
+            debugger;
+        // this.vector.mix(Vector2.empty(), mixAmount).floor(1);
+        this.position.add(this.vector.clone().multiply(new Vector2(sub,sub)));
+
+        if(!this.interferencesCall("beforeRender")) return;
+        this.render(this.element, this.getComputedVector());
+        this.lastRendTime = now;
+        this.interferencesCall("afterRender");
+    }
+
+    initRenderLoop(){
+        let render = () => {
+            this.renderFire();
+            requestAnimationFrame(render);
+        };
+
+        //setInterval(render, 100);
+        requestAnimationFrame(render);
+    }
+
+    setInterferences(interferences){
+        (interferences.init||(a=>{}))(this);
+        this.interferences.push(interferences);
+        return this;
+    }
+    interferencesCall(name, ...args){
+        return this.interferences.reduce((prev,next) => prev===false?false:(next[name]||(a=>{}))(this, ...args), true)===false?false:true;
+    }
+}
