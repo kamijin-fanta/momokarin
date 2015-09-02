@@ -1,8 +1,19 @@
 body
   background: #ffaaaa
+  margin: 0
 
+html, body, .field
+  width: 100%
+  height: 100%
+  overflow: hidden
 
-.box
+.field
+  position: relative
+
+.card-list
+  padding: 1px
+
+.card
   background-color: #219161
   width: 100px
   height: 130px
@@ -13,6 +24,55 @@ body
   z-index: 1002
   margin: 2px
 
-.box.active
+.card.active
   border: 2px solid black
   margin: 0px
+
+.player-maker
+  .side
+    $width: 30px
+    position: fixed
+    background: #0086b3
+
+    &.top,&.bottom
+      height: $width
+      width: 100%
+      &.half
+        width: 50%
+        &.one
+          left: 0
+        &.tow
+          right: 0
+    &.bottom
+      bottom: 0
+    &.top
+      top: 0
+
+    &.left,&.right
+      width: $width
+      height: 100%
+      &.half
+        height: 50%
+        &.one
+          top: 0
+        &.tow
+          bottom: 0
+    &.left
+      left: 0
+    &.right
+      right: 0
+
+    $s: 90
+    $l: 70
+    &.p1
+      background: hsl(0, $s, $l)
+    &.p2
+      background: hsl(210, $s, $l)
+    &.p3
+      background: hsl(60, $s, $l)
+    &.p4
+      background: hsl(180, $s, $l)
+    &.p5
+      background: hsl(150, $s, $l)
+    &.p6
+      background: hsl(210, 10, 70)

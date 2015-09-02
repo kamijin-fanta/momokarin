@@ -7,6 +7,6 @@ import Interference from "./src/FieldInterference";
 
 $(() => {
     var int = new Interference($(".field"));
-    var card = new InertiaObject($(".box.c"), [int])
+    var card = new InertiaObject($(".card"), [int])
                     .setInterferences(int);
 });

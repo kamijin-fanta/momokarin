@@ -22,10 +22,18 @@ export default class InertiaObject extends VectorObject {
         element.css({
             transform: `translate3d(${vector.x}px,${vector.y}px,0px)`
         });
+
+        // toggle active class
+        let active = "active";
+        if(element.hasClass(active) != this.isActive())
+            element.toggleClass(active);
+    }
+
+    isActive(){
+        return this.isTouch;
     }
 
     eventInit(e) {
-        // e.bind
         e.each(draggable())
             .on("dragstart", (_, e) => {
                 this.setVector(Vector2.empty());
