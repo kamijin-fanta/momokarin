@@ -1,11 +1,12 @@
-body
-  background: #ffaaaa
-  margin: 0
-
 html, body, .field
   width: 100%
   height: 100%
   overflow: hidden
+
+body
+  background: #219161
+  background-image: url("asset/table-noise.png")
+  margin: 0
 
 .field
   position: relative
@@ -14,18 +15,21 @@ html, body, .field
   padding: 1px
 
 .card
-  background-color: #219161
+  background-color: #fafafa
   width: 100px
   height: 130px
-  //transform: translate3d(70px,50px,0px) rotate(40deg)
   cursor: move
   touch-action: none
   -webkit-user-select: none
   z-index: 1002
   margin: 2px
+  overflow: hidden
+  border-radius: 5px
+  border: 1px solid #666
+  position: absolute
 
 .card.active
-  border: 2px solid black
+  border: 3px solid red
   margin: 0px
 
 .player-maker
@@ -33,6 +37,19 @@ html, body, .field
     $width: 30px
     position: fixed
     background: #0086b3
+    height: 100%
+
+    .tip
+      vertical-align: middle
+      vertical-align: middle
+      top: 50%
+      left: 50%
+      position: absolute
+      width: 10em
+      margin-left: -5em
+      text-align: center
+      margin-top: -0.5em
+
 
     &.top,&.bottom
       height: $width
@@ -51,6 +68,8 @@ html, body, .field
     &.left,&.right
       width: $width
       height: 100%
+      .tip
+        transform: rotate(-90deg)
       &.half
         height: 50%
         &.one
