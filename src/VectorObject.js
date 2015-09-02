@@ -18,6 +18,7 @@ export default class VectorObject {
         this.positionHistoryLifeTimeMs = 100;
         this.lastRendTime = (new Date()).getTime();
         this.interferences = [];
+        this.size = new Vector2(jqueryElement.width(), jqueryElement.height());
 
         this.initRenderLoop();
     }
@@ -59,6 +60,15 @@ export default class VectorObject {
     getComputedVector() {
         return this.position;
     }
+    getPosition(){
+        return this.position.clone();
+    }
+    getCenterPosition(){
+        return this.position.clone().add(this.size.clone().divide(new Vector2(2,2)))
+    }
+    setCenterPosition(vector){
+        this.position = vector.clone().subtract(this.size.clone().divide(new Vector2(2,2)));
+    }
 
     /* virtual */
     render(element, vector) {
@@ -98,6 +108,10 @@ export default class VectorObject {
         return this;
     }
     interferencesCall(name, ...args){
-        return this.interferences.reduce((prev,next) => prev===false?false:(next[name]||(a=>{}))(this, ...args), true)===false?false:true;
+        let _toConsumableArray = (arr) => { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+        return this.interferences.reduce((prev,next) => {
+            let fn = (next[name]||(a=>{}));
+            return prev===false?false:fn.apply(next, [this].concat(_toConsumableArray(args)))
+        }, true)===false?false:true;
     }
 }

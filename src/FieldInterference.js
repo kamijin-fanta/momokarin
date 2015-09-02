@@ -24,15 +24,24 @@ export default class FieldInterference extends InterferenceBase {
     }
 
     beforeRender(vectorObj){
-        // todo フィールドからはみ出なようにする
-        if(vectorObj.position.x < 0){
-            vectorObj.vector.multiplyX(0);
-            if(!vectorObj.isTouch) vectorObj.position.x = 0;
-        }
-        if(vectorObj.position.y < 0){
-            vectorObj.vector.multiplyY(0);
-            if(!vectorObj.isTouch) vectorObj.position.y = 0;
-        }
+        // フィールドからはみ出なようにする
+        // todo 山札等のフィット
+        let pos = vectorObj.getCenterPosition();
+        let setPos = function (axis, v, revers = false) {
+            let flag = pos[axis] < v;
+            console.log(flag);
+            if(revers?(!flag):flag){
+                vectorObj.vector["multiply" + axis.toUpperCase()](v);
+                if(!vectorObj.isTouch){
+                    pos[axis] = v;
+                    vectorObj.setCenterPosition(pos);
+                }
+            }
+        };
+        setPos("x", 0, false);
+        setPos("y", 0, false);
+        setPos("x", this.fieldElement.width(), true);
+        setPos("y", this.fieldElement.height(), true);
     }
     afterRender(vectorObj){
     }
