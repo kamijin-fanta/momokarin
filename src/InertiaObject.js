@@ -5,7 +5,7 @@ import NormalizeTouch from "./NormalizeTouch";
 const debug = require("debug")("Inertial");
 
 export default class InertiaObject extends VectorObject {
-    constructor(element, interferences) {
+    constructor(element) {
         super(element);
         this.eventInit(element);
 
@@ -19,6 +19,7 @@ export default class InertiaObject extends VectorObject {
     }
 
     render(element, vector) {
+        // todo 最小限の描画を行う
         element.css({
             transform: `translate3d(${vector.x}px,${vector.y}px,0px)`
         });

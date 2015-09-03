@@ -3,13 +3,21 @@ import "./style.sass";
 import $ from "jquery/dist/jquery.min.js";
 import InertiaObject from "./src/InertiaObject";
 import polyffil from "babel/polyfill";
-import Interference from "./src/FieldInterference";
+import FieldInterference from "./src/FieldInterference";
+import GateInterference from "./src/GateInterference";
 import SelectRect from "./src/SelectRect";
 
 $(() => {
-    var int = new Interference($(".field"));
-    var card = new InertiaObject($(".card"), [int])
-                    .setInterferences(int);
+    var field = $(".field");
+
+    var fieldInterference = new FieldInterference(field); // 壁にぶつかる
+    var gateInterference = new GateInterference(field, $(".player-maker .side")); // PlayerMakerに反応させる
+    var intList = [fieldInterference, gateInterference];
+
+    // カード生成
+    for(var a in " ".repeat(5)){
+        new InertiaObject($("<div class='card'>").appendTo(".card-list")).setInterferences(intList);
+    }
 
     // 選択範囲
     new SelectRect(field, $(".selector"));

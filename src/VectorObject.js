@@ -81,9 +81,7 @@ export default class VectorObject {
         let sub = now - this.lastRendTime;
         let mixAmount = sub / 300;
         mixAmount = Math.min(Math.max(mixAmount, 0), 1);
-        if(!this.vector.mix(Vector2.empty(), mixAmount).floor)
-            debugger;
-        // this.vector.mix(Vector2.empty(), mixAmount).floor(1);
+        this.vector.mix(Vector2.empty(), mixAmount).floor(3);
         this.position.add(this.vector.clone().multiply(new Vector2(sub,sub)));
 
         if(!this.interferencesCall("beforeRender")) return;
@@ -103,8 +101,10 @@ export default class VectorObject {
     }
 
     setInterferences(interferences){
-        (interferences.init||(a=>{}))(this);
-        this.interferences.push(interferences);
+        interferences.map(i => {
+            (i.init||(a=>{}))(this);
+            this.interferences.push(i);
+        });
         return this;
     }
     interferencesCall(name, ...args){

@@ -29,7 +29,6 @@ export default class FieldInterference extends InterferenceBase {
         let pos = vectorObj.getCenterPosition();
         let setPos = function (axis, v, revers = false) {
             let flag = pos[axis] < v;
-            console.log(flag);
             if(revers?(!flag):flag){
                 vectorObj.vector["multiply" + axis.toUpperCase()](v);
                 if(!vectorObj.isTouch){
