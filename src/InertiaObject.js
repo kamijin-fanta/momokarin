@@ -51,9 +51,9 @@ export default class InertiaObject extends VectorObject {
     eventFilter(e){
         return new NormalizeTouch(e);
     }
-    eventKill(e) {
-        // todo test
-        e.off("dragstart")
+    kill() {
+        super.kill();
+        this.element.off("dragstart")
             .off("dragmove")
             .off("dragend");
     }

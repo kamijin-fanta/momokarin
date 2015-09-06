@@ -1,5 +1,6 @@
 import InterferenceBase from "./InterferenceBase";
 import Vector2 from "./Vector2";
+import $ from "jquery/dist/jquery.min.js";
 
 export default class extends InterferenceBase {
     constructor(field, players) {
@@ -36,7 +37,12 @@ export default class extends InterferenceBase {
             let flag = Vector2.contain(rectLT, rectRB, pos, v.offsetWidth);
 
             if(flag){
-                match = v;
+                match = $(v);
+                let owner = match.attr("data-owner");
+                let card = vectorObj.card;
+                console.log(`Change Owner -> ${owner}`);
+                card.owner = owner;
+                this.store.setCard(card);
                 return false;
             }
         });

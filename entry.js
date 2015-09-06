@@ -6,6 +6,8 @@ import polyffil from "babel/polyfill";
 import FieldInterference from "./src/FieldInterference";
 import GateInterference from "./src/GateInterference";
 import SelectRect from "./src/SelectRect";
+import CardStore from "./src/CardStore";
+
 
 $(() => {
     var field = $(".field");
@@ -15,10 +17,12 @@ $(() => {
     var intList = [fieldInterference, gateInterference];
 
     // カード生成
-    for(var a in " ".repeat(5)){
+    for(var a in " ".repeat(0)){
         new InertiaObject($("<div class='card'>").appendTo(".card-list")).setInterferences(intList);
     }
 
     // 選択範囲
     new SelectRect(field, $(".selector"));
+
+    new CardStore($(".card-list"), $(".field"), intList);
 });

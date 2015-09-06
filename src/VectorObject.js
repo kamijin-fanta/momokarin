@@ -1,5 +1,5 @@
 import Vector2 from "./Vector2";
-import {List} from "immutable";
+import {List} from "immutable"; // todo remove
 
 export default class VectorObject {
     /*
@@ -19,8 +19,14 @@ export default class VectorObject {
         this.lastRendTime = (new Date()).getTime();
         this.interferences = [];
         this.size = new Vector2(jqueryElement.width(), jqueryElement.height());
+        this.stop = false;
 
         this.initRenderLoop();
+    }
+
+    kill(){
+        this.stop = true;
+        this.element.remove();
     }
 
     moveToPosition(vector, time) {
@@ -93,10 +99,9 @@ export default class VectorObject {
     initRenderLoop(){
         let render = () => {
             this.renderFire();
-            requestAnimationFrame(render);
+            if(!this.stop) requestAnimationFrame(render);
         };
 
-        //setInterval(render, 100);
         requestAnimationFrame(render);
     }
 
