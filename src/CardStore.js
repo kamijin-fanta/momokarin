@@ -22,7 +22,7 @@ export default class{
         let appendList = [];
         for(let cardRow in this.cardObjects){
             let card = this.cardObjects[cardRow];
-            let virtualMatch = this.cardVirtualObjects.findIndex(e => card.getId() === e.card.getId());
+            let virtualMatch = this.cardVirtualObjects.findIndex(e => card.hash() === e.card.hash());
             let isOwn = card.owner === this.ownerId;
             if(virtualMatch != -1 && isOwn){
                 // found
@@ -65,7 +65,7 @@ export default class{
     setCard(replace){
         for(let cardRow in this.cardObjects){
             let card = this.cardObjects[cardRow];
-            if(card.getId()  === replace.getId()){
+            if(card.hash()  === replace.hash()){
                 this.cardObjects[cardRow] = replace;
                 debug("Replace Card", replace);
                 // todo emit change

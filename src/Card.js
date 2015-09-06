@@ -15,7 +15,7 @@ export default class {
         }
         return card;
     }
-    getId(){
+    hash(){
         return `${this.cardsetID}/${this.ID}`
     }
 }
