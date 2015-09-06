@@ -8,81 +8,111 @@
     <!--<script src="//192.168.11.53:8081/target/target-script-min.js#anonymous"></script>-->
 </head>
 <body>
-    <div class="field">
-        <div class="player-maker">
-            <div data-owner="p1" class="side p1 top half one"><div class="tip">枚数：15枚</div></div>
-            <div data-owner="p2" class="side p2 bottom half one"><div class="tip">枚数：15枚</div></div>
-            <div data-owner="p3" class="side p3 left"><div class="tip">枚数：15枚</div></div>
-            <div data-owner="p4" class="side p4 right"><div class="tip">枚数：15枚</div></div>
-            <div data-owner="p5" class="side p5 top half tow"><div class="tip">枚数：15枚</div></div>
-            <div data-owner="p6" class="side p6 bottom half tow"><div class="tip">枚数：15枚</div></div>
+    <div class="set">
+        <div class="field">
+            <div class="player-maker">
+                <!--<div data-owner="p1" class="side p1 top half one"><div class="tip">枚数：15枚</div></div>-->
+                <!--<div data-owner="p2" class="side p2 bottom half one"><div class="tip">枚数：15枚</div></div>-->
+                <!--<div data-owner="p3" class="side p3 left"><div class="tip">枚数：15枚</div></div>-->
+                <!--<div data-owner="p4" class="side p4 right"><div class="tip">枚数：15枚</div></div>-->
+                <!--<div data-owner="p5" class="side p5 top half tow"><div class="tip">枚数：15枚</div></div>-->
+                <!--<div data-owner="p6" class="side p6 bottom half tow"><div class="tip">枚数：15枚</div></div>-->
+                <!-- -->
+            </div>
+            <div class="selector">
 
+            </div>
+            <div class="card-list">
+            </div>
         </div>
-        <div class="selector">
+        <div class="tool-tip">
+            <div class="master">
+                <span class="add-card"><i class="glyphicon glyphicon-plus"></i> カードの追加</span>
+                <span><i class="glyphicon glyphicon-th"></i> 一覧</span>
+            </div>
+            <div class="player">Player Tool</div>
+        </div>
+        <div class="contents">
 
-        </div>
-        <div class="card-list">
-        </div>
-    </div>
-    <div class="contents">
-
-        <div class="modal fade" id="welcome">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">参加登録</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h3>すでにPINを持ってる</h3>
-                                <div class="input-group">
-                                    <input type="text" class="form-control player-room-id">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default join-player">Join</button>
+            <div class="modal fade" id="welcome">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">参加登録</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3>すでにPINを持ってる</h3>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control player-room-id">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default join-player">Join</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-6">
-                                <h3>ルームを作成</h3>
-                                <button type="button" class="btn btn-default join-master">新規作成</button>
+                                <div class="col-sm-6">
+                                    <h3>ルームを作成</h3>
+                                    <button type="button" class="btn btn-default join-master">新規作成</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="create-room">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <h3>PINコードを教える</h3>
-                                このルームのPINコードは以下です
-                                <h3 class="room-id"></h3>
-                            </div>
+            <div class="modal fade" id="create-room">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3>PINコードを教える</h3>
+                                    このルームのPINコードは以下です
+                                    <h3 class="room-id"></h3>
+                                </div>
 
-                            <div class="col-sm-6">
-                                <h3>URLで教える</h3>
-                                未実装
+                                <div class="col-sm-6">
+                                    <h3>URLで教える</h3>
+                                    未実装
+                                    <a href="line://msg/text/"><img src="asset/linebutton_82x20.png" alt="" width="80"/></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+            <div class="modal fade" id="addCard">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">カードの追加</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="cardlist">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>

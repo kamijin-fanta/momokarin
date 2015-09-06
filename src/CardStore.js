@@ -4,6 +4,7 @@ import FieldInterference from "./FieldInterference";
 import GateInterference from "./GateInterference";
 import Card from "./Card";
 let debug = require("debug")("CardStore");
+debug = () => {};
 
 export default class{
     constructor(cardListElement, field, interferences, client) {
@@ -24,6 +25,10 @@ export default class{
             this.ownerId = c.socketId;
             this.isTable = c.isMaster;
 
+            let tip = $(".tool-tip").removeClass(["is-master", "is-player"]);
+            if(this.isTable) tip.addClass("is-master");
+            else tip.addClass("is-player");
+
             // maker
             if("is table") {
                 let makerList = [
@@ -38,7 +43,7 @@ export default class{
                 marker.empty();
                 c.clientList.forEach((e, i) => {
                     if( (c.isMaster && e.id !== c.masterId) || (!c.isMaster && e.id === c.masterId))
-                        marker.append(`<div data-owner="${e.id}" class="side ${makerList[i]}"><div class="tip">枚数：15枚</div></div>`);
+                        marker.append(`<div data-owner="${e.id}" class="side ${makerList[i]}"><div class="tip"></div></div>`);
                 });
             }
             this.refresh();
@@ -71,7 +76,7 @@ export default class{
 
     appendElement(list){
         list.forEach(card => {
-            let element = $("<div class='card'></div>");
+            let element = $("<div class='card'><div class='img'></div></div>"); // <img class='img'><img class='gmi'>
 
             this.cardListElement.append(element);
             let object = new InertiaObject(element).setInterferences(this.interferences);

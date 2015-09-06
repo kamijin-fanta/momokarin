@@ -14,6 +14,8 @@ export default class InertiaObject extends VectorObject {
         this.cssOffset = null;
         this.isTouch = false;
 
+        this.reverse = false;
+
         this.moveOffset = e => e.subtract(this.startClient);
         this.interferencesCall("init");
     }
@@ -21,8 +23,14 @@ export default class InertiaObject extends VectorObject {
     render(element, vector) {
         // todo 最小限の描画を行う
         element.css({
-            transform: `translate3d(${vector.x}px,${vector.y}px,0px)`
+            transform: `translate3d(${vector.x}px,${vector.y}px,0px)`,
         });
+        if(this.lastReverse !== this.reverse) {
+            element.find(".img").css({
+                "background-image": `url(${this.reverse ? this.card.gmi : this.card.img})`
+            });
+            this.lastReverse = this.reverse;
+        }
 
         // toggle active class
         let active = "active";
@@ -46,6 +54,9 @@ export default class InertiaObject extends VectorObject {
             })
             .on("dragend", (_, e) => {
                 this.touchEnd(this.eventFilter(e));
+            })
+            .on("dblclick", (_, e) => {
+                this.reverse = !this.reverse;
             });
     }
     eventFilter(e){

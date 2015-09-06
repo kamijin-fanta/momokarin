@@ -4,9 +4,10 @@ import draggable from "./draggable";
 import Vector2 from "./Vector2";
 
 export default class {
-    constructor(field, view) {
+    constructor(field, view, store) {
         this.field = field;
         this.view = view;
+        this.store = store;
         this.isDragging = false;
 
         this.field.each(draggable())

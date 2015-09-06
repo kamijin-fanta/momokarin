@@ -15,7 +15,7 @@ import io from "socket.io-client";
 let Modal = require("bootstrap");
 
 $(() => {
-    let client = new Connector(io('http://localhost:3000'));
+    let client = new Connector(io(':3000'));
     let errorHandle = error => {
         console.warn(error);
     };
@@ -51,7 +51,42 @@ $(() => {
         client.createRoom().then(data => {
             $(".room-id").text(data);
             console.log("CreateRoom ID", data, "MySocketId", client.socketId);
+            // todo remove
+            client.appendCard([new Card(1, 1, "http://shiv3.ga:8000/uploads/D_3_1441571521324_02.png", "http://shiv3.ga:8000/uploads/back.png")]);
         }, errorHandle);
+    });
+
+
+    let addCard = $('#addCard');
+    $(".add-card").click(e => {
+        addCard.modal("show");
+        let cardList = $(".cardlist");
+        cardList.empty();
+        let urlBase = "http://shiv3.ga:8000";
+        $.get(urlBase + "/json/index.json", data => {
+            data.map((row, i) => {
+                $.get(`${urlBase}/${row.card_data_path}`, cardData => {
+                    let html = $(`<div><h4>${row.card_list_name}</h4><div class="row"></div><button type="button" class="btn btn-default btn-block" data-id="${i}">このカードを追加</button></div>`);
+                    html.find("button").click((e)=> {
+                        addCard.modal("hide");
+                        client.appendCard(cardData.map(c => {
+                            c.img = urlBase + c.img;
+                            c.gmi = urlBase + c.gmi;
+                            return c;
+                        }));
+                        return false;
+                    });
+                    let list = cardData.slice(0,4).map( c => {
+                        let img = $(`<div class="col-xs-3"><img class="img-responsive"></div>`)
+                            .find("img")
+                                .attr("src", urlBase + c.img)
+                            .end();
+                        html.find(".row").append(img);
+                    });
+                    cardList.append(html);
+                }, "json");
+            });
+        }, "json");
     });
 
     var field = $(".field");
@@ -65,8 +100,8 @@ $(() => {
         new InertiaObject($("<div class='card'>").appendTo(".card-list")).setInterferences(intList);
     }
 
-    // 選択範囲
-    new SelectRect(field, $(".selector"));
+    let store = new CardStore($(".card-list"), $(".field"), intList, client);
 
-    new CardStore($(".card-list"), $(".field"), intList, client);
+    // 選択範囲
+    new SelectRect(field, $(".selector"), store);
 });
