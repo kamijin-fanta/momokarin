@@ -6,16 +6,23 @@ import Card from "./Card";
 let debug = require("debug")("CardStore");
 
 export default class{
-    constructor(cardListElement, field, interferences) {
+    constructor(cardListElement, field, interferences, client) {
         this.cardObjects = [];
         this.cardVirtualObjects = [];
         this.cardListElement = cardListElement;
         this.field = field;
         this.interferences = interferences.map(i => (i.store=this)&&i);
         this.ownerId = "owner";
+        this.client = client;
 
-        this.cardObjects = [new Card(5,2,"img", "gmi", "owner", "attr"), new Card(1,2,"img", "gmi", "owner", "attr")];
+        this.cardObjects = [];
         this.refresh();
+
+        this.client.onChange = c => {
+            this.cardObjects = c.cardList;
+            this.ownerId = c.isMaster?null:c.socketId;
+            this.refresh();
+        };
     }
     refresh(){
         let alreadyList = [];
@@ -23,7 +30,7 @@ export default class{
         for(let cardRow in this.cardObjects){
             let card = this.cardObjects[cardRow];
             let virtualMatch = this.cardVirtualObjects.findIndex(e => card.hash() === e.card.hash());
-            let isOwn = card.owner === this.ownerId;
+            let isOwn = card.owner === this.ownerId || (this.ownerId === null && !card.owner);
             if(virtualMatch != -1 && isOwn){
                 // found
                 let virtual = this.cardVirtualObjects[virtualMatch];
@@ -63,6 +70,8 @@ export default class{
     }
 
     setCard(replace){
+        this.client.modifyCard(replace);
+        return ;
         for(let cardRow in this.cardObjects){
             let card = this.cardObjects[cardRow];
             if(card.hash()  === replace.hash()){
