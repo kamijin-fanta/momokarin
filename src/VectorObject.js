@@ -1,5 +1,4 @@
 import Vector2 from "./Vector2";
-import {List} from "immutable"; // todo remove
 
 export default class VectorObject {
     /*
@@ -14,7 +13,7 @@ export default class VectorObject {
         this.vector = Vector2.empty();
         this.position = Vector2.empty();
         this.destination = Vector2.empty();
-        this.positionHistory = List();
+        this.positionHistory = [];
         this.positionHistoryLifeTimeMs = 100;
         this.lastRendTime = (new Date()).getTime();
         this.interferences = [];
@@ -40,7 +39,7 @@ export default class VectorObject {
     setPosition(vector) {
         this.position = vector;
         this.gcPositionHistory();
-        this.positionHistory = this.positionHistory.push([(new Date()).getTime(), vector]);
+        this.positionHistory.push([(new Date()).getTime(), vector.clone()]);
     }
 
     setVector(vector){
@@ -49,9 +48,9 @@ export default class VectorObject {
 
     getInertia(){
         this.gcPositionHistory();
-        if(this.positionHistory.size==0)
+        if(this.positionHistory.length==0)
             return Vector2.empty();
-        let first = this.positionHistory.first()[1];
+        let first = this.positionHistory[0][1];
         let rawVector = this.position.clone().subtract(first);
         let normalize = rawVector.clone().mix(Vector2.empty(), 1-1/this.positionHistoryLifeTimeMs);
         return normalize;
