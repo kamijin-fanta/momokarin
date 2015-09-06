@@ -3,6 +3,7 @@ import InertiaObject from "./InertiaObject";
 import FieldInterference from "./FieldInterference";
 import GateInterference from "./GateInterference";
 import Card from "./Card";
+let debug = require("debug")("CardStore");
 
 export default class{
     constructor(cardListElement, field, interferences) {
@@ -27,18 +28,17 @@ export default class{
                 // found
                 let virtual = this.cardVirtualObjects[virtualMatch];
                 this.cardVirtualObjects[virtualMatch].card = card;
-                console.log("Match", card, virtual);
+                debug("Match", card, virtual);
                 alreadyList.push(virtualMatch);
             } else if(isOwn) {
                 // not found
                 appendList.push(card);
             }
         }
-        let removeList = this.cardVirtualObjects.filter((e,i)=> !alreadyList.some((e2,i2) => i == i2));
-        console.log("Append", appendList, "RemoveList", removeList);
-
+        let removeList = this.cardVirtualObjects.filter((e,i)=> !alreadyList.some(d => i == d));
         this.appendElement(appendList);
         this.removeElement(removeList);
+        debug("Append", appendList, "RemoveList", removeList, "CardObjects", this.cardObjects, "Virtual", this.cardVirtualObjects);
     }
 
     appendElement(list){
@@ -67,13 +67,13 @@ export default class{
             let card = this.cardObjects[cardRow];
             if(card.getId()  === replace.getId()){
                 this.cardObjects[cardRow] = replace;
-                console.log("Replace Card", replace);
+                debug("Replace Card", replace);
                 // todo emit change
                 this.refresh();
                 return;
             }
         }
-        console.warn("Cant Replace Card", replace);
+        debug("Warn!! ", replace);
         this.refresh();
     }
 }
