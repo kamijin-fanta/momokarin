@@ -3,10 +3,11 @@ import Vector2 from "./Vector2";
 import $ from "jquery/dist/jquery.min.js";
 
 export default class extends InterferenceBase {
-    constructor(field, players) {
+    constructor(field, players, selector) {
         super();
         this.fieldElement = field;
         this.players = players;
+        this.selector = selector;
     }
     init(vectorObj){
     }
@@ -30,7 +31,7 @@ export default class extends InterferenceBase {
         // PlayerMakerに反応させる
         let pos = vectorObj.getCenterPosition();
         let match;
-        this.players.each((i,v) => {
+        this.players.find(this.selector).each((i,v) => {
             let vect = Vector2;
             let rectLT = new Vector2(v.offsetLeft, v.offsetTop);
             let rectRB = rectLT.clone().add(new Vector2(v.offsetWidth, v.offsetHeight));

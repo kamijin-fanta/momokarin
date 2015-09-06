@@ -14,15 +14,36 @@ export default class{
         this.interferences = interferences.map(i => (i.store=this)&&i);
         this.ownerId = "owner";
         this.client = client;
+        this.isTable = false;
 
         this.cardObjects = [];
         this.refresh();
 
         this.client.onChange = c => {
             this.cardObjects = c.cardList;
-            this.ownerId = c.isMaster?null:c.socketId;
+            this.ownerId = c.socketId;
+            this.isTable = c.isMaster;
+
+            // maker
+            if("is table") {
+                let makerList = [
+                    "p1 top",
+                    "p2 bottom",
+                    "p3 left",
+                    "p4 right",
+                    "p5 top",
+                    "p6 bottom"
+                ];
+                let marker = $(".player-maker");
+                marker.empty();
+                c.clientList.forEach((e, i) => {
+                    if( (c.isMaster && e.id !== c.masterId) || (!c.isMaster && e.id === c.masterId))
+                        marker.append(`<div data-owner="${e.id}" class="side ${makerList[i]}"><div class="tip">枚数：15枚</div></div>`);
+                });
+            }
             this.refresh();
         };
+        this.client.emit();
     }
     refresh(){
         let alreadyList = [];
@@ -30,7 +51,7 @@ export default class{
         for(let cardRow in this.cardObjects){
             let card = this.cardObjects[cardRow];
             let virtualMatch = this.cardVirtualObjects.findIndex(e => card.hash() === e.card.hash());
-            let isOwn = card.owner === this.ownerId || (this.ownerId === null && !card.owner);
+            let isOwn = card.owner === this.ownerId || (this.isTable && !card.owner);
             if(virtualMatch != -1 && isOwn){
                 // found
                 let virtual = this.cardVirtualObjects[virtualMatch];

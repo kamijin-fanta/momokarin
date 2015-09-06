@@ -57,7 +57,7 @@ $(() => {
     var field = $(".field");
 
     var fieldInterference = new FieldInterference(field); // 壁にぶつかる
-    var gateInterference = new GateInterference(field, $(".player-maker .side")); // PlayerMakerに反応させる
+    var gateInterference = new GateInterference(field, $(".player-maker"), ".side"); // PlayerMakerに反応させる
     var intList = [fieldInterference, gateInterference];
 
     // カード生成
