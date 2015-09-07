@@ -55,6 +55,10 @@ $(() => {
             client.appendCard([new Card(1, 1, "http://shiv3.ga:8000/uploads/D_3_1441571521324_02.png", "http://shiv3.ga:8000/uploads/back.png")]);
         }, errorHandle);
     });
+    window.uploadcomlite = (d) => {
+        //let file = d.map(r => r.name);
+        debugger;
+    };
 
 
     let addCard = $('#addCard');
@@ -69,9 +73,10 @@ $(() => {
                     let html = $(`<div><h4>${row.card_list_name}</h4><div class="row"></div><button type="button" class="btn btn-default btn-block" data-id="${i}">このカードを追加</button></div>`);
                     html.find("button").click((e)=> {
                         addCard.modal("hide");
-                        client.appendCard(cardData.map(c => {
+                        client.appendCard(cardData.map(Card.fromObject).map(c => {
                             c.img = urlBase + c.img;
                             c.gmi = urlBase + c.gmi;
+                            c.attr.reverse = true;
                             return c;
                         }));
                         return false;

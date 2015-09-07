@@ -14,7 +14,6 @@ export default class InertiaObject extends VectorObject {
         this.cssOffset = null;
         this.isTouch = false;
 
-        this.reverse = false;
         this.roate = false;
 
         this.moveOffset = e => e.subtract(this.startClient);
@@ -31,11 +30,11 @@ export default class InertiaObject extends VectorObject {
             });
             this.lastTransform = transform;
         }
-        if(this.lastReverse !== this.reverse) {
+        if(this.lastReverse !== this.card.attr.reverse) {
             element.find(".img").css({
-                "background-image": `url(${this.reverse ? this.card.gmi : this.card.img})`
+                "background-image": `url(${this.card.attr.reverse ? this.card.gmi : this.card.img})`
             });
-            this.lastReverse = this.reverse;
+            this.lastReverse = this.card.attr.reverse;
         }
 
         // toggle active class
@@ -92,13 +91,13 @@ export default class InertiaObject extends VectorObject {
     touchEnd(e) {
         let time = (new Date).getTime();
         if(this.lastTouchEndTime + 400 > this.touchStartTime ) {
-            this.reverse = !this.reverse;
+            this.card.attr.reverse = !this.card.attr.reverse;
             time = 0;
         } else {
             if(this.touchStartTime > time - 100) {
-                let old = this.reverse;
+                let old = this.card.attr.reverse;
                 setTimeout(() => {
-                    if(old == this.reverse) this.roate = !this.roate;
+                    if(old == this.card.attr.reverse) this.roate = !this.roate;
                 }, 400);
             }
         }

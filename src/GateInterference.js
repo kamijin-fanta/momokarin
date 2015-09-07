@@ -40,7 +40,10 @@ export default class extends InterferenceBase {
             if(flag){
                 match = $(v);
                 let owner = match.attr("data-owner");
+                let isPlayer = match.attr("data-isplayer")=="true";
                 let card = vectorObj.card;
+                if(isPlayer)
+                    card.attr.reverse = false;
                 console.log(`Change Owner -> ${owner}`);
                 card.owner = owner;
                 this.store.setCard(card);

@@ -1,11 +1,11 @@
-export default class {
+export default class Card {
     constructor(id, cardset, img, gmi, owner, attr) {
         this.ID = id;
         this.cardsetID = cardset;
         this.img = img;
         this.gmi = gmi;
         this.owner = owner;
-        this.attr = attr;
+        this.attr = attr || {};
     }
     static fromObject(obj){
         let card = new Card();

@@ -43,7 +43,7 @@ export default class{
                 marker.empty();
                 c.clientList.forEach((e, i) => {
                     if( (c.isMaster && e.id !== c.masterId) || (!c.isMaster && e.id === c.masterId))
-                        marker.append(`<div data-owner="${e.id}" class="side ${makerList[i]}"><div class="tip"></div></div>`);
+                        marker.append(`<div data-owner="${e.id}" data-isplayer="${e.id!==c.masterId}" class="side ${makerList[i]}"><div class="tip"></div></div>`);
                 });
             }
             this.refresh();
