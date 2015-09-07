@@ -20,5 +20,6 @@ export default class Vector2 extends victor {
         let floor = b => (b>0?Math.floor:Math.ceil)(b * a) / a;
         this.x = floor(this.x);
         this.y = floor(this.y);
+        return this;
     }
 }

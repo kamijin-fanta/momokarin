@@ -15,6 +15,7 @@ export default class InertiaObject extends VectorObject {
         this.isTouch = false;
 
         this.reverse = false;
+        this.roate = false;
 
         this.moveOffset = e => e.subtract(this.startClient);
         this.interferencesCall("init");
@@ -22,9 +23,14 @@ export default class InertiaObject extends VectorObject {
 
     render(element, vector) {
         // todo 最小限の描画を行う
-        element.css({
-            transform: `translate3d(${vector.x}px,${vector.y}px,0px)`,
-        });
+        let vect = vector.clone().floor(1);
+        let transform = `translate3d(${vect.x}px,${vect.y}px,0px) rotate(${this.roate?"90deg":"0deg"})`;
+        if(this.lastTransform !== transform){
+            element.css({
+                transform: transform,
+            });
+            this.lastTransform = transform;
+        }
         if(this.lastReverse !== this.reverse) {
             element.find(".img").css({
                 "background-image": `url(${this.reverse ? this.card.gmi : this.card.img})`
@@ -54,9 +60,6 @@ export default class InertiaObject extends VectorObject {
             })
             .on("dragend", (_, e) => {
                 this.touchEnd(this.eventFilter(e));
-            })
-            .on("dblclick", (_, e) => {
-                this.reverse = !this.reverse;
             });
     }
     eventFilter(e){
@@ -69,6 +72,7 @@ export default class InertiaObject extends VectorObject {
             .off("dragend");
     }
     touchStart(e) {
+        this.touchStartTime = (new Date).getTime();
         if(!this.interferencesCall("beforeTouchStart", e)) return;
         debug("start", e);
         this.isTouch = true;
@@ -86,6 +90,20 @@ export default class InertiaObject extends VectorObject {
         this.interferencesCall("afterTouchMove", e);
     }
     touchEnd(e) {
+        let time = (new Date).getTime();
+        if(this.lastTouchEndTime + 400 > this.touchStartTime ) {
+            this.reverse = !this.reverse;
+            time = 0;
+        } else {
+            if(this.touchStartTime > time - 100) {
+                let old = this.reverse;
+                setTimeout(() => {
+                    if(old == this.reverse) this.roate = !this.roate;
+                }, 400);
+            }
+        }
+        this.lastTouchEndTime = time;
+
         if(!this.interferencesCall("beforeTouchEnd", e)) return;
         this.isTouch = false;
         this.setVector(this.getInertia());
