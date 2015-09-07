@@ -79,7 +79,8 @@ $(() => {
                     let html = $(`<div><h4>${row.card_list_name}</h4><div class="row"></div><button type="button" class="btn btn-default btn-block" data-id="${i}">このカードを追加</button></div>`);
                     html.find("button").click((e)=> {
                         addCard.modal("hide");
-                        client.appendCard(cardData.map(Card.fromObject).map(c => {
+                        var shuffle = function() {return Math.random()-.5};
+                        client.appendCard(cardData.sort(shuffle).map(Card.fromObject).map(c => {
                             c.img = urlBase + c.img;
                             c.gmi = urlBase + c.gmi;
                             c.attr.reverse = true;
@@ -99,6 +100,14 @@ $(() => {
             });
         }, "json");
     });
+
+    $(".reset-table").click(e => {
+        $("#reset").modal("show");
+    });
+    $(".do-reset").click(e => {
+        client.removeCard(client.cardList);
+    });
+
 
     var field = $(".field");
 

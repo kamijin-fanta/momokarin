@@ -30,7 +30,10 @@ export default class{
             else tip.addClass("is-player");
 
             // maker
-            if("is table") {
+
+            let marker = $(".player-maker");
+            marker.empty();
+            if(this.isTable) {
                 let makerList = [
                     "p1 top",
                     "p2 bottom",
@@ -39,12 +42,11 @@ export default class{
                     "p5 top",
                     "p6 bottom"
                 ];
-                let marker = $(".player-maker");
-                marker.empty();
-                c.clientList.forEach((e, i) => {
-                    if( (c.isMaster && e.id !== c.masterId) || (!c.isMaster && e.id === c.masterId))
-                        marker.append(`<div data-owner="${e.id}" data-isplayer="${e.id!==c.masterId}" class="side ${makerList[i]}"><div class="tip"></div></div>`);
+                c.getPlayerList().forEach((e, i) => {
+                    marker.append(`<div data-owner="${e.id}" data-isplayer="${e.id!==c.masterId}" class="side ${makerList[i]}"><div class="tip"></div></div>`);
                 });
+            } else {
+                marker.append(`<div data-owner="${c.masterId}" data-isplayer="false" class="side top p${c.getMyPlayerNumber()+1}"><div class="tip"></div></div>`);
             }
             this.refresh();
         };
