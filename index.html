@@ -29,9 +29,12 @@
             <div class="master">
                 <span class="add-card"><i class="glyphicon glyphicon-plus"></i> 公式画像を追加</span>
                 <span class="add-custom"><i class="glyphicon glyphicon-picture"></i> 写真追加</span>
-                <span><i class="glyphicon glyphicon-th"></i> 一覧</span>
+                <!--<span><i class="glyphicon glyphicon-th"></i> 一覧</span>-->
             </div>
-            <div class="player">Player Tool</div>
+            <div class="player">
+                <span class="add-card"><i class="glyphicon glyphicon-plus"></i> 公式画像を追加</span>
+                <span class="add-custom"><i class="glyphicon glyphicon-picture"></i> 写真追加</span>
+            </div>
         </div>
         <div class="contents">
 
@@ -59,12 +62,6 @@
                                     <button type="button" class="btn btn-default join-master">新規作成</button>
                                 </div>
                             </div>
-                            <form id="uploadForm"
-                                  enctype="multipart/form-data"
-                                  action="/"
-                                  method="post">
-                                <input id="fileupload" type="file" name="files" multiple="true">
-                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -119,32 +116,41 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="addCustomCard">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">画像からカードの追加</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="fileuploader">Upload</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-
+<link href="asset/uploadfile.css" rel="stylesheet">
+<script src="asset/jquery.uploadfile.min.js"></script>
 <script>
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
         var url = "http://" + location.hostname + ":8081/";
-        $('#fileupload').on("change", function (e,d) {
-            $(this).ajaxSubmit({
-                url: url,
-
-                error: function(xhr) {
-                    status('Error: ' + xhr.status);
-                },
-
-                success: function(response) {
-                    console.log(response);
-                }
-            });
-
-
+        $("#fileuploader").uploadFile({
+            url: url,
+            fileName: "file",
+            onSuccess: function (files, response, xhr, pd) {
+                window.uploadcomlite(response, url);
+            }
         });
     });
 </script>

@@ -14,8 +14,6 @@ export default class InertiaObject extends VectorObject {
         this.cssOffset = null;
         this.isTouch = false;
 
-        this.roate = false;
-
         this.moveOffset = e => e.subtract(this.startClient);
         this.interferencesCall("init");
     }
@@ -23,17 +21,19 @@ export default class InertiaObject extends VectorObject {
     render(element, vector) {
         // todo 最小限の描画を行う
         let vect = vector.clone().floor(1);
-        let transform = `translate3d(${vect.x}px,${vect.y}px,0px) rotate(${this.roate?"90deg":"0deg"})`;
+        let transform = `translate3d(${vect.x}px,${vect.y}px,0px) rotate(${this.card.attr.roate?"90deg":"0deg"})`;
         if(this.lastTransform !== transform){
             element.css({
                 transform: transform,
             });
             this.lastTransform = transform;
         }
-        if(this.lastReverse !== this.card.attr.reverse) {
+        if(this.card.attr.reverse === undefined || this.lastReverse !== this.card.attr.reverse) {
             element.find(".img").css({
                 "background-image": `url(${this.card.attr.reverse ? this.card.gmi : this.card.img})`
             });
+            if(this.card.attr.reverse === undefined)
+                this.card.attr.reverse = false;
             this.lastReverse = this.card.attr.reverse;
         }
 
@@ -97,7 +97,7 @@ export default class InertiaObject extends VectorObject {
             if(this.touchStartTime > time - 100) {
                 let old = this.card.attr.reverse;
                 setTimeout(() => {
-                    if(old == this.card.attr.reverse) this.roate = !this.roate;
+                    if(old == this.card.attr.reverse) this.card.attr.roate = !this.card.attr.roate;
                 }, 400);
             }
         }

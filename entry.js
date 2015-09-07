@@ -55,9 +55,15 @@ $(() => {
             client.appendCard([new Card(1, 1, "http://shiv3.ga:8000/uploads/D_3_1441571521324_02.png", "http://shiv3.ga:8000/uploads/back.png")]);
         }, errorHandle);
     });
-    window.uploadcomlite = (d) => {
-        //let file = d.map(r => r.name);
-        debugger;
+
+    let addCustomCard = $("#addCustomCard");
+    $(".add-custom").click(e => {
+        addCustomCard.modal("show");
+    });
+    window.uploadcomlite = (d, base) => {
+        let filePath = d.file.name;
+        let fullPath = base + "file?id=" +filePath;
+        client.appendCard([new Card((new Date).getTime(), 0, fullPath, "asset/back.png", client.socketId)]);
     };
 
 
